@@ -12,8 +12,8 @@ on:
   workflow_dispatch:
     inputs:
       versionString:
-       type: string
-       required: true
+        type: string
+        required: true
 jobs:
   generate:
     uses: AdamRaichu/mcaddon-package-workflow/.github/workflows/main.yml@v1
