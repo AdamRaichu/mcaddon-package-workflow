@@ -1,6 +1,11 @@
 on:
   workflow_call:
     inputs:
+      commit_changes:
+        description: Whether the built artifacts should be uploaded to `inputs.target_path`
+        required: false
+        type: boolean
+        default: true
       pack_name:
         description: The name of the file
         required: true
@@ -9,11 +14,6 @@ on:
         description: What kind of package you are building
         required: true
         type: number
-      target_path:
-        description: Where you would like the assets to be stored
-        required: false
-        type: string
-        default: ./assets
       bp_path:
         description: Path to the behavior pack
         required: false
@@ -24,13 +24,18 @@ on:
         required: false
         type: string
         default: ./rp
+      target_path:
+        description: Where you would like the assets to be stored
+        required: false
+        type: string
+        default: ./assets
       user_name:
-        description: User name to be used in commit push
+        description: User name to be used in commit push IF commit_changes is true
         required: false
         type: string
         default: github-actions
       user_email:
-        description: User email to be used in commit push
+        description: User email to be used in commit push IF commit_changes is true
         required: false
         type: string
         default: github-actions@github.com
@@ -46,11 +51,15 @@ jobs:
         with:
           script: |
             var AZ = require("adm-zip");
+            var handle = require("./build-handler.js");
             var pType = ${{ inputs.pack_type }};
+            var builds = {};
+
             if (pType === 0 || pType === 1) {
               var bp = new AZ();
               bp.addLocalFolder("${{ inputs.bp_path }}");
-              bp.writeZip("${{ inputs.target_path }}/${{ inputs.pack_name }}_bp.mcpack")
+              // bp.writeZip("${{ inputs.target_path }}/${{ inputs.pack_name }}_bp.mcpack")
+              builds.bp = bp;
             }
             if (pType === 0 || 2) {
               var rp = new AZ();
