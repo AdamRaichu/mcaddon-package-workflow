@@ -2,6 +2,8 @@
 
 A reusable workflow which packages resource and/or behavior packs into `.mcpack` and `.mcaddon` files.
 
+> **I archived the repo because it is an extremely clunky way to do this task and I don't use it anymore.**
+
 ## Usage
 
 Here is an example workflow that creates a `.mcaddon` file in /builds/\<versionString\>
